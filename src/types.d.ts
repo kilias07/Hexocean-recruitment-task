@@ -1,7 +1,7 @@
 export interface Dish {
   id: number;
   name: string;
-  preparation_time: Date;
+  preparation_time: string;
   no_of_slices?: number;
   diameter?: number;
   spiciness_scale?: number;

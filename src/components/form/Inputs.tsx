@@ -20,6 +20,9 @@ const Condition = ({
   );
 };
 
+export const required = (value: string | number) =>
+  value ? undefined : "Required";
+
 export function TextInput() {
   return (
     <div className="text-xl relative z-0 mb-6">
@@ -30,6 +33,7 @@ export function TextInput() {
         name="name"
         component="input"
         type="text"
+        validate={required}
       />
       <label
         className="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
@@ -52,7 +56,7 @@ export function TimeInput() {
         placeholder=" "
         type="time"
         step="1"
-        validate={(value) => (value ? undefined : "Required")}
+        validate={required}
       />
       <label
         htmlFor="preparation_time"
@@ -60,6 +64,7 @@ export function TimeInput() {
       >
         Preparation Time
       </label>
+      <Error name="preparation_time" />
     </div>
   );
 }
@@ -97,25 +102,16 @@ export function ConditionInputs() {
           >
             Number of slices
           </label>
-          <Field
-            // className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            name="no_of_slices"
-            // component="input"
-            // type="range"
-            // id="no_of_slices"
-            // placeholder=" "
-            // min="0"
-            // max="10"
-            // step="1"
-          >
+          <Field name="no_of_slices" validate={required}>
             {({ input: { value, onChange } }) => (
               <div className="flex items-center">
                 <input
-                  className="w-full h-2 text-gray-600 cursor-pointer"
+                  className="w-9/12 h-6 text-gray-600 cursor-pointer shrink-0"
                   type="range"
                   id="no_of_slices"
                   placeholder=" "
                   min="0"
+                  required
                   max="10"
                   step="1"
                   value={value}
@@ -129,7 +125,7 @@ export function ConditionInputs() {
           </Field>
           <Error name="no_of_slices" />
         </div>
-        <div className="text-xl relative z-0 mb-6">
+        <div className="text-xl relative z-0 py-2">
           <Field
             id="diameter"
             name="diameter"
@@ -139,14 +135,15 @@ export function ConditionInputs() {
             placeholder=" "
             step="0.01"
             min="0"
+            validate={required}
           />
           <label
             htmlFor="diameter"
-            className="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            className="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-5 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-5"
           >
             Diameter
           </label>
-          <Error name="no_of_slices" />
+          <Error name="diameter" />
         </div>
       </Condition>
       <Condition when="type" is="soup">
@@ -157,7 +154,7 @@ export function ConditionInputs() {
               {({ input: { value, onChange } }) => (
                 <div className="flex items-center">
                   <input
-                    className="w-full h-2 text-gray-600 cursor-pointer"
+                    className=" w-9/12 shrink-0 h-6 text-gray-600 cursor-pointer"
                     type="range"
                     id="spiciness_scale"
                     placeholder=" "
@@ -188,6 +185,7 @@ export function ConditionInputs() {
             placeholder=" "
             subscription={{ value: true }}
             min="0"
+            validate={required}
             step="1"
           />
           <label

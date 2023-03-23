@@ -1,5 +1,5 @@
 import { Config } from "final-form";
-import { Form, Field, FormSpy } from "react-final-form";
+import { Form } from "react-final-form";
 import { Dish } from "../types";
 import {
   TextInput,
@@ -13,6 +13,14 @@ const onSubmit: Config<Dish, { name: string }>["onSubmit"] = async (
   values,
   form
 ) => {
+  const errors = {} as { [keyof: string]: string };
+
+  if (!values.name || !values.preparation_time) {
+    errors.name = "Required";
+    errors.preparation_time = "Required";
+    return errors;
+  }
+
   let filteredValues = {};
   if (values.type === "pizza") {
     const { spiciness_scale, slices_of_bread, ...valuesRest } = values;
@@ -29,27 +37,20 @@ const onSubmit: Config<Dish, { name: string }>["onSubmit"] = async (
 
   try {
     const res = await sendDish(filteredValues as Dish);
-    console.log(res);
+    res && alert("Dish added successfully");
     form.reset();
   } catch (e) {
+    alert("Something went wrong");
     console.log(e);
   }
 };
 
-const Error = ({ name }: { name: string }) => (
-  <Field name={name} subscription={{ error: true, touched: true }}>
-    {({ meta: { error, touched } }) =>
-      error && touched ? <span>{error}</span> : null
-    }
-  </Field>
-);
-
 function MyForm() {
   return (
-    <Form onSubmit={onSubmit} initialValues={{ name: "" }}>
+    <Form onSubmit={onSubmit}>
       {({ handleSubmit, form, submitting }) => (
-        <form onSubmit={handleSubmit} className="w-64 h-[30rem]">
-          <div className="h-[26rem]">
+        <form onSubmit={handleSubmit} className="w-64 h-[34rem]">
+          <div className="h-[30rem]">
             <TextInput />
             <TimeInput />
             <div>
